@@ -13,6 +13,7 @@ import Womenswear from './components/productsearch/Womenswear';
 import HomeScreen from './components/screens/HomeScreen';
 import ProductScreen from './components/screens/ProductScreen';
 import CartScreen from "./components/screens/cartScreen";
+import Update from "./components/screens/update";
 import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import ProfileScreen from './components/screens/ProfileScreen';
@@ -30,6 +31,7 @@ import './index.css';
 
 function App() {
   return (
+    
     <Router>
       <Header />
       <div className="app-container">
@@ -48,6 +50,7 @@ function App() {
           <Route path="/menswear" element={<Menswear />} />
           <Route path="/womenswear" element={<Womenswear />} />
           <Route path="/payment" element={<PaymentScreen />} />
+          <Route path="/update" element={<Update />} />
           <Route path="/placeorder" element={<PlaceOrderScreen />} />
           <Route path="/order/:id" element={<OrderScreen />} />
           <Route path="/admin/userlist" element={<UserListScreen />} />
