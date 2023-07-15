@@ -1,24 +1,19 @@
-// import bgimage1 from '../../videos/background1.mp4';
-// import './homescreen.css';
-import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button, Table } from "react-bootstrap";
+
+import React, { useEffect } from "react";
+import { Row, Button, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails, updateUserProfile } from "../../actions/userActions";
-import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
+import { getUserDetails} from "../../actions/userActions";
+
 import { listMyOrders } from "../../actions/orderActions";
 
 import Message from "../Message";
 import Loader from "../Loader";
 
 function ProfileScreen() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-
+ 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,8 +23,7 @@ function ProfileScreen() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
+  
 
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
@@ -38,99 +32,38 @@ function ProfileScreen() {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!user || !user.name || !success || userInfo._id !== user._id) {
-        dispatch({ type: USER_UPDATE_PROFILE_RESET });
-        dispatch(getUserDetails());
-        dispatch(listMyOrders());
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
+      dispatch(listMyOrders());
+      dispatch(getUserDetails());
+     
     }
-  }, [dispatch, navigate, userInfo, user, success]);
+  }, [dispatch, navigate, userInfo, user]);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-    } else {
-      dispatch(
-        updateUserProfile({
-          id: user._id,
-          name: name,
-          email: email,
-          password: password,
-        })
-      );
-      navigate("/login");
-      setMessage("Please log in again to apply the changes");
-    }
-  };
+  
 
   return (
     <div className="profile-screen">
       <Row>
-        <Col md={3}>
+        <Row md={3}>
           <div>
-            <strong>Profile username: {user && user.username}</strong>
+            
+
           </div>
           <div>
-            <strong>Name: {user && user.name}</strong>
+          <h3>See Details</h3>
+          <h3>Welcome {user.name}</h3>
+            <strong>Name: {user.name}</strong>
+            <div><strong>email: {user.email}</strong></div>
+            <div>
+            <div>
+            <Link to="/update">Update your Profile</Link>
+            </div>
+            </div>
           </div>
-          {message && <Message variant="danger">{message}</Message>}
-          {error && <Message variant="danger">{error}</Message>}
-          {loading && <Loader />}
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                required
-                type="email"
-                placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="passwordConfirm">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </Form.Group>
-
-            <Button type="submit" variant="primary" className="mt-3">
-              Update
-            </Button>
-          </Form>
-        </Col>
-        <Col md={9}>
-          <h2>My Orders</h2>
+          
+        </Row>
+        <Row md={9}>
+       
+          <h2>Your Orders</h2>
 
           {loadingOrders ? (
             <Loader />
@@ -141,8 +74,8 @@ function ProfileScreen() {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Date</th>
-                  <th>Total</th>
+                  <th>Ordered_Date</th>
+                  <th>Price</th>
                   <th>Paid</th>
                   <th>Delivered</th>
                 </tr>
@@ -156,7 +89,7 @@ function ProfileScreen() {
                         ? order.createdAt.substring(0, 10)
                         : null}
                     </td>
-                    <td>${order.totalPrice}</td>
+                    <td>₹{order.totalPrice}</td>
                     <td>
                       {order.isPaid ? (
                         order.paidAt ? (
@@ -171,7 +104,7 @@ function ProfileScreen() {
                     </td>
                     <td>
                       <LinkContainer to={`/order/${order._id}`}>
-                        <Button className="btn-sm">Details</Button>
+                        <Button className="btn-sm">More</Button>
                       </LinkContainer>
                     </td>
                   </tr>
@@ -179,7 +112,7 @@ function ProfileScreen() {
               </tbody>
             </Table>
           )}
-        </Col>
+        </Row>
       </Row>
     </div>
   );

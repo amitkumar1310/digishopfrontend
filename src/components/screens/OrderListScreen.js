@@ -14,9 +14,9 @@ import Loader from "../Loader";
 import { useDispatch, useSelector } from "react-redux";
 
 /* ACTION CREATORS */
-import { listOrders,getUserDetails } from "../../actions/orderActions";
+import { listOrders } from "../../actions/orderActions";
 
-function OrderListScreen({ history }) {
+function OrderListScreen() {
   const dispatch = useDispatch();
 const navigate=useNavigate();
   /* PULLING OUT STATE */

@@ -151,11 +151,7 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: USER_DETAILS_RESET,
   });
-  /* DISPATCH TO RESET THE DETAILS OF ORDERS MADE BY USER */
-  // dispatch({
-  //   type: ORDER_LIST_MY_RESET,
-  // });
-  /* DISPATCH TO RESET THE DETAILS OF USERS LIST */
+  
   dispatch({
     type: USER_LIST_RESET,
   });
@@ -220,51 +216,7 @@ export const getUserDetails = () => async (dispatch, getState) => {
     }
   };
   
-// export const getUserDetails = () => async (dispatch, getState) => {
-//   try {
-//     dispatch({
-//       type: USER_DETAILS_REQUEST,
-//     });
 
-//     const {
-//       userLogin: { userInfo },
-//       userDetails: { user }, // Get the current user details from the state
-//     } = getState();
-
-//     if (!user || userInfo._id !== user._id) {
-//       // Dispatch the action only if the user details are not available or if the user ID has changed
-//       const access_token = localStorage.getItem('access_token');
-//       const config = {
-//         headers: {
-//           "Content-type": "application/json",
-//           Authorization: `Bearer ${access_token}`,
-//         },
-//       };
-
-//       const { data } = await axios.get(`/api/user/profile`, config);
-//       console.log("User details response:", data);
-
-//       dispatch({
-//         type: USER_DETAILS_SUCCESS,
-//         payload: data.user,
-//       });
-//     } else {
-//       // User details are already available in the state, no need to dispatch the action again
-//       dispatch({
-//         type: USER_DETAILS_SUCCESS,
-//         payload: user,
-//       });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: USER_DETAILS_FAIL,
-//       payload:
-//         error.response && error.response.data.detail
-//           ? error.response.data.detail
-//           : error.message,
-//     });
-//   }
-// };
 
 
 

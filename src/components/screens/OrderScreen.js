@@ -90,12 +90,12 @@ function OrderScreen() {
     <Message variant="danger">{error}</Message>
   ) : (
     <div>
-      <h1>Order: {order._id}</h1>
+      <h1>Order No.: {order._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h2>Shipping Details</h2>
 
               <p>
                 <strong>Name: {order.User.name}</strong>
@@ -107,7 +107,7 @@ function OrderScreen() {
               </p>
 
               <p>
-                <strong>Shipping Address: </strong>
+                <strong>Delivery Address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
@@ -198,7 +198,7 @@ function OrderScreen() {
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Shipping:</Col>
+                  <Col>Shipping Charge:</Col>
 
                   <Col>₹{order.shippingPrice}</Col>
                 </Row>
@@ -206,7 +206,7 @@ function OrderScreen() {
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax:</Col>
+                  <Col>Tax Charge:</Col>
 
                   <Col>₹{order.taxPrice}</Col>
                 </Row>

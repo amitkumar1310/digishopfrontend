@@ -36,7 +36,7 @@ const navigate=useNavigate();
 
     dispatch(savePaymentMethod(paymentMethod));
 
-    // AFTER CHOSING THE PAYMENT METHOD REDIRECT USER TO PlaceOrder SCREEN
+    // AFTER CHOSING THE PAYMENT METHOD REDIRECTing USER TO PlaceOrder SCREEN
     navigate("/placeorder");
   };
 

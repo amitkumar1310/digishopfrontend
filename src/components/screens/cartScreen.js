@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import Message from '../Message';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
-import './CartScreen.css';
+import './style/CartScreen.css';
 
 function CartScreen() {
   const { id } = useParams();

@@ -19,16 +19,19 @@ function PlaceOrderScreen() {
   const formattedOrderItems = cart.cartItems.map((item) => ({
     product: item.product,
     qty: item.qty,
-    price: item.price, // Update the key name to "price" here
+    price: item.price, // Updating the key name to "price" here
   }));
 
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
     .toFixed(2);
+    cart.shippingPrice = 0;
+if(cart.shippingPrice < 200){
+  cart.shippingPrice = 20.000.toFixed(2);
+}
+  // cart.shippingPrice = (cart.itemsPrice > 500 ? 0 : 10).toFixed(2);
 
-  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2);
-
-  cart.taxPrice = Number(0.082 * cart.itemsPrice).toFixed(2);
+  cart.taxPrice = Number(0.076 * cart.itemsPrice).toFixed(2);
 
   cart.totalPrice = (
     Number(cart.itemsPrice) +
@@ -36,10 +39,7 @@ function PlaceOrderScreen() {
     Number(cart.taxPrice)
   ).toFixed(2);
 
-  // if (!cart.paymentMethod) {
-  //   navigate("/payment");
-  // }
-
+  
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`);

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../../actions/productAction";
 import { useNavigate } from "react-router-dom";
 import ElectronicsScreen from "./Categories";
-import "./homescreen.css";
+import "./style/homescreen.css";
 
 function HomeScreen() {
   const dispatch = useDispatch();
