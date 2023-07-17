@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button, ListGroupItem } from "react-bootstrap";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,6 +22,8 @@ function OrderScreen() {
   const dispatch = useDispatch();
 
   const [sdkReady, setSdkReady] = useState(false);
+  const userDetails = useSelector((state) => state.userDetails);
+ const { user } = userDetails;
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
@@ -45,8 +47,10 @@ function OrderScreen() {
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src =
-      "https://www.paypal.com/sdk/js?client-id=AYgflmsaM7ccNLPlKUiufIyw8-spOE4UuS5XyyTCvhzheA-1EUcZF9qGlgXBZaSKcP5BY0zTc9WgINKe";
-    script.async = true;
+      // "https://www.paypal.com/sdk/js?client-id=AYgflmsaM7ccNLPlKUiufIyw8-spOE4UuS5XyyTCvhzheA-1EUcZF9qGlgXBZaSKcP5BY0zTc9WgINKe";
+      "https://www.paypal.com/sdk/js?client-id=AXY503ZOnzYQeefryT2obQdoRCYrqOLAa4blMFi8ErmJWhKo1v6ZuemBH8RBy8qTfb3cBtVxfSdHmfmd";
+
+      script.async = true;
     script.onload = () => {
       setSdkReady(true);
     };
@@ -80,9 +84,19 @@ function OrderScreen() {
     dispatch(payOrder(id, paymentResult));
   };
 
+  // const deliverHandler = () => {
+  //   const data=dispatch(deliverOrder(order));
+ 
+  //  };
   const deliverHandler = () => {
-    dispatch(deliverOrder(order));
+    try {
+      dispatch(deliverOrder(order));
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  
 
   return loading ? (
     <Loader />
@@ -113,16 +127,7 @@ function OrderScreen() {
                 {order.shippingAddress.country}
               </p>
 
-              {order.isDeliver ? (
-                <Message variant="success">
-                  Delivered on{" "}
-                  {order.deliveredAt
-                    ? order.deliveredAt.substring(0, 10)
-                    : null}
-                </Message>
-              ) : (
-                <Message variant="warning">Not Delivered</Message>
-              )}
+
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -132,7 +137,21 @@ function OrderScreen() {
                 <strong>Payment Method: </strong>
                 {order.paymentMethod}
               </p>
-
+              <ListGroupItem>
+  {console.log("isDeliver:", order.isDelivered)}
+  {console.log("deliveredAt:", order.deliveredAt)}
+  
+  {order.isDelivered !== undefined && order.deliveredAt !== undefined ? (
+    order.isDelivered ? (
+      <Message variant="success">
+        Delivered on{" "}
+        {order.deliveredAt ? order.deliveredAt.substring(0, 10) : null}
+      </Message>
+    ) : (
+      <Message variant="warning">Not Delivered</Message>
+    )
+  ) : null}
+</ListGroupItem>
               {order.isPaid ? (
                 <Message variant="success">
                   Paid on {order.paidAt ? order.paidAt.substring(0, 10) : null}
@@ -191,7 +210,7 @@ function OrderScreen() {
               <ListGroup.Item>
                 <Row>
                   <Col>Items:</Col>
-
+                  
                   <Col>₹{order.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
@@ -220,7 +239,7 @@ function OrderScreen() {
                 </Row>
               </ListGroup.Item>
 
-              {!order.isPaid && (
+              {order.paymentMethod === 'PayPal' && !order.isPaid  &&(
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
@@ -235,19 +254,33 @@ function OrderScreen() {
               )}
             </ListGroup>
 
-            {loadingDeliver && <Loader />}
+            {/* {loadingDeliver && <Loader />} */}
 {/* && userInfo.isAdmin && order.isPaid && !order.isDeliver && */}
-            {userInfo && userInfo.isAdmin && order.isPaid && !order.isDeliver &&(
+            {userInfo && user.isAdmin && order.isPaid && !order.isDelivered &&(
               <ListGroup.Item>
                 <Button
                   type="button"
                   className="btn w-100"
                   onClick={deliverHandler}
+                  
                 >
                   Mark As Delivered
                 </Button>
+                
               </ListGroup.Item>
+              
             )}
+            <ListGroupItem>
+            {order.isPaid ? (
+                <Message variant="success">
+                  Paid on {order.paidAt ? order.paidAt.substring(0, 10) : null}
+                </Message>
+              ) : (
+                <Message variant="warning">Not Paid</Message>
+              )}
+            </ListGroupItem>
+           
+           
           </Card>
         </Col>
       </Row>

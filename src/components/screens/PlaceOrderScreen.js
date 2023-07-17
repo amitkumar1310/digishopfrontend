@@ -26,7 +26,7 @@ function PlaceOrderScreen() {
     .reduce((acc, item) => acc + item.price * item.qty, 0)
     .toFixed(2);
     cart.shippingPrice = 0;
-if(cart.shippingPrice < 200){
+if(cart.shippingPrice < 100){
   cart.shippingPrice = 20.000.toFixed(2);
 }
   // cart.shippingPrice = (cart.itemsPrice > 500 ? 0 : 10).toFixed(2);

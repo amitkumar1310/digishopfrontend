@@ -67,8 +67,14 @@ const userDetails = useSelector((state) => state.userDetails);
             </LinkContainer>
             )}
           </Nav>
-          <SearchBox /> {/* Assuming this component exists */}
+          <SearchBox /> 
         </Navbar.Collapse>
+        {!userInfo &&(
+ <LinkContainer to="/register">
+ <Nav.Link><i className="fas fa-user"></i> New here?</Nav.Link>
+</LinkContainer>
+        )}
+       
       </Container>
     </Navbar>
   );

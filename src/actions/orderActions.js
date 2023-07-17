@@ -135,7 +135,8 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
       paymentResult,
       config
     );
-
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    console.log("pay order",data)
     /* IF PUT REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
     dispatch({
       type: ORDER_PAY_SUCCESS,
@@ -246,14 +247,17 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${access_token}`,
       },
     };
+    console.log("delivering the order")
 
     /* MAKING API CALL TO UPDATE ORDER DELIVERY STATUS */
     const { data } = await axios.put(
       `/api/orders/${order._id}/deliver/`,
       {},
       config
+      
     );
-
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    console.log("delivered",data)
     /* IF PUT REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
     dispatch({
       type: ORDER_DELIVER_SUCCESS,

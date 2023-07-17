@@ -20,7 +20,10 @@ const navigate=useNavigate();
   const { shippingAddress } = cart;
 
   // STATE
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  // const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const initialPaymentMethod = useSelector((state) => state.cart.paymentMethod);
+  const [paymentMethod, setPaymentMethod] = useState(initialPaymentMethod);
+
 
   /* IF NO SHIPPING ADDRESS THEN REDIRECT TO ShippingAddress SCREEN */
   if (!shippingAddress.address) {
@@ -48,18 +51,29 @@ const navigate=useNavigate();
         <Form.Group>
           <Form.Label as="legend">Select Method</Form.Label>
           <Col>
+            
             <Form.Check
-              type="radio"
-              label="PayPal or Credit Card"
-              id="paypal"
-              name="paymentMethod"
-              checked
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+  type="radio"
+  label="PayPal or Credit Card"
+  id="paypal"
+  name="paymentMethod"
+  checked={paymentMethod === "PayPal"}
+  onChange={(e) => setPaymentMethod("PayPal")}
+></Form.Check>
+<Form.Check
+  type="radio"
+  label="Cash on Delivery"
+  id="cash"
+  name="paymentMethod"
+  checked={paymentMethod === "Cash"}
+  onChange={(e) => setPaymentMethod("Cash")}
+></Form.Check>
+
+
           </Col>
         </Form.Group>
 
-        <Button type="submit" variant="primary" className="my-3">
+        <Button type="submit" variant="secondary" className="my-3">
           Continue
         </Button>
       </Form>
